@@ -1,126 +1,74 @@
 import "./App.css";
 import React, { useState } from "react";
-import integration from "./data";
+import Image from "./Image"
+import { saveAs } from 'file-saver';
+
+
 
 function App() {
-  const option = [
-    {
-      value: "Optym",
-    },
-    {
-      value: "Google",
-    },
-  ];
+  const[results,setResults]=useState([])
+  const[value,setValue]=useState("")
+  const shuffleData=["fashion","film","car","bike","boat","nature","sunset","dark","food","ocean","Textures & Patterns","beauty","lake","forest","moon","action","animal","lion","kids","gods","history"]
+  const [random,setRandom]=useState(shuffleData[0])
+  const [pageNumber, setPageNumber] = useState(0);
+  const [pageRange,setPageRange]=useState(2)
 
-  const table = [
-    {
-      heading: "Ename",
-    },
-    {
-      heading: "EId",
-    },
-    {
-      heading: "Dob",
-    },
-    {
-      heading: "Designation",
-    },
-  ];
-
-  const [company, setCompany] = useState("Optym");
-  const [result, setResult] = useState(integration[0].getData());
-  const [order, setOrder] = useState("ASC");
-  function ChangeData() {
-    for (var i = 0; i < integration.length; i++) {
-      if (integration[i].value === company) {
-        setResult(integration[i].getData());
-      }
-    }
+ 
+  const next=(e)=>{
+    if(pageRange<=20){
+    setPageNumber(pageNumber+2)
+    setPageRange(pageRange+2)
   }
-
-  // SORTING FUNCTIONS
-
-  // function idSort(EId) {
-  //   if (order === "ASC") {
-  //     const data = [...result].sort((a, b) => a[EId] - b[EId]);
-  //     setResult(data);
-  //     setOrder("DSC");
-  //   }
-  //   if (order === "DSC") {
-  //     const data = [...result].sort((a, b) => b[EId] - a[EId]);
-  //     setResult(data);
-  //     setOrder("ASC");
-  //   }
-  // }
-  function Sorting(col) {
-    if (order === "ASC") {
-      const data = [...result].sort((a, b) =>
-        a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1
-      );
-      setResult(data);
-      setOrder("DSC");
-    }
-    if (order === "DSC") {
-      const data = [...result].sort((a, b) =>
-        a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1
-      );
-      setResult(data);
-      setOrder("ASC");
-    }
+    e.preventDefault()
   }
+  const previous=(e)=>{
+    if(pageNumber>=0){
+    setPageNumber(pageNumber-2)
+    setPageRange(pageRange-2)
+  }
+     e.preventDefault()
+  }
+  const search=(e)=>{
+    setValue("")
+    fetch(`https://api.unsplash.com/search/photos/?client_id=Bn1bLki8GqBZxK6bCE9MpLlKUvlVeB34M1Trm7A2was&per_page=20&query=${value}`)
+    .then(res=>res.json())
+     .then(data=>{
+       console.log(data)
+       setResults(data.results)
+     })
+     e.preventDefault()
+  }
+  
 
-  // function dateSort(Dob) {
-  //   console.log(order)
-  //   if (order === "ASC") {
-  //     const data = [...result].sort((a, b) => {
-  //       let da = new Date(a.Dob);
-  //       let db = new Date(b.Dob);
-  //       return da - db;
-  //     });
-  //     setResult(data);
-  //     setOrder("DSC");
-  //   }
-  //   if (order === "DSC") {
-  //     const data = [...result].sort((a, b) => {
-  //       let da = new Date(a[Dob]);
-  //       let db = new Date(b[Dob]);
-  //       return db - da;
-  //     });
-  //     setResult(data);
-  //     setOrder("ASC");
-  //   }
-  // }
+   const shuffle=()=>{
+    let differentValue=Math.floor(Math.random() *20)
+    setRandom(shuffleData[differentValue])
+   }
+
+  const fetchData=()=>{
+    shuffle()
+    fetch(`https://api.unsplash.com/search/photos/?client_id=Bn1bLki8GqBZxK6bCE9MpLlKUvlVeB34M1Trm7A2was&per_page=20&query=${random}`)
+     .then(res=>res.json())
+      .then(data=>{
+        setResults(data.results)
+      })
+  }
+  const download = () => {
+    const data="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb";
+    saveAs(data)
+  }
+ 
   return (
     <div className="App">
-      <div className="box">
-        <select
-          onChange={(e) => setCompany(e.target.value)}
-          onClick={ChangeData}
-          value={company}
-        >
-          {option.map((data) => (
-            <option value={data.value}>{data.value}</option>
-          ))}
-        </select>
-      </div>
-      <div className="table-content">
-        <table>
-          {table.map((item) => (
-            <th onClick={() => Sorting(`${item.heading}`)}>
-              {item.heading}
-            </th>
-          ))}
-
-          {result.map((item) => (
-            <tr>
-              <td>{item.Ename}</td>
-              <td>{item.EId}</td>
-              <td>{item.Dob}</td>
-              <td>{item.Designation}</td>
-            </tr>
-          ))}
-        </table>
-      </div>
+      <input value={value} onChange={(e)=>setValue(e.target.value)}></input>
+      <button onClick={()=>search()}>Search</button>
+      <button onClick={()=>fetchData()}>Shuffle</button>
+      <Image results={results} pageNumber={pageNumber} pageRange={pageRange}></Image>
+     
+      <button onClick={()=>previous()}>previous</button>
+      <button onClick={()=>next()}>next</button>
+      <button onClick={()=>download()}>Download</button>
+      
     </div>
   );
 }
