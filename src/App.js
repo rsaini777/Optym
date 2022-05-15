@@ -1,37 +1,23 @@
 import "./App.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "./Image";
 
 function App() {
- 
-  const [results, setResults] = useState([]);
+  
+  const [results, setResults] = useState([]);  
   const [value, setValue] = useState("");
-  const shuffleData = [
-    "fashion",
-    "film",
-    "car",
-    "bike",
-    "boat",
-    "nature",
-    "sunset",
-    "dark",
-    "food",
-    "ocean",
-    "Textures & Patterns",
-    "beauty",
-    "lake",
-    "forest",
-    "moon",
-    "action",
-    "animal",
-    "lion",
-    "kids",
-    "gods",
-    "history",
-  ];
-  const [random, setRandom] = useState(shuffleData[0]);
   const [pageNumber, setPageNumber] = useState(0);
   const [pageRange, setPageRange] = useState(2);
+
+  {/* Adding starting data using lifecylce mount method */}
+
+  useEffect(() => {
+    fetch("https://api.unsplash.com/photos/random?client_id=Bn1bLki8GqBZxK6bCE9MpLlKUvlVeB34M1Trm7A2was&count=50")
+    .then(response => response.json())
+    .then(data => setResults(data))
+  },[])
+   
+ {/* Change image Function */}
 
   const next = (e) => {
     if (pageRange <= 50) {
@@ -47,6 +33,9 @@ function App() {
     }
     e.preventDefault();
   };
+
+   {/* Search function give sezrch bar results */}
+
   const search = (e) => {
     setValue("");
     fetch(
@@ -60,20 +49,18 @@ function App() {
     e.preventDefault();
   };
 
-  const shuffle = () => {
-    let differentValue = Math.floor(Math.random() * 20);
-    setRandom(shuffleData[differentValue]);
-  };
-
-  const fetchData = () => {
-    shuffle();
+  
+   {/* fetchData function use in shuffle button giving random image */}
+  const fetchData = (e) => {
+  
     fetch(
-      `https://api.unsplash.com/search/photos/?client_id=Bn1bLki8GqBZxK6bCE9MpLlKUvlVeB34M1Trm7A2was&per_page=50&query=${random}`
+      `https://api.unsplash.com/photos/random?client_id=Bn1bLki8GqBZxK6bCE9MpLlKUvlVeB34M1Trm7A2was&count=50`
     )
       .then((res) => res.json())
       .then((data) => {
-        setResults(data.results);
+        setResults(data);
       });
+      e.preventDefault()
   };
 
   return (

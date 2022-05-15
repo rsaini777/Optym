@@ -4,7 +4,10 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 import { saveAs } from "file-saver";
 
 function Image({ results, pageNumber, pageRange }) {
+
+   {/* Download image Function use for downloading image from url */}
   const download = (ImageResult) => {
+    console.log(ImageResult)
     saveAs(ImageResult);
   };
   console.log(results)
