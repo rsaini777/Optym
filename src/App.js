@@ -9,7 +9,7 @@ function App() {
   const [pageNumber, setPageNumber] = useState(0);
   const [pageRange, setPageRange] = useState(2);
 
-  {/* Adding starting data using lifecylce mount method */}
+  {/* Adding initial data using lifecylce mount method */}
 
   useEffect(() => {
     fetch("https://api.unsplash.com/photos/random?client_id=Bn1bLki8GqBZxK6bCE9MpLlKUvlVeB34M1Trm7A2was&count=50")
@@ -17,7 +17,7 @@ function App() {
     .then(data => setResults(data))
   },[])
    
- {/* Change image Function */}
+ {/* Change image Function slider */}
 
   const next = (e) => {
     if (pageRange <= 50) {
@@ -34,7 +34,7 @@ function App() {
     e.preventDefault();
   };
 
-   {/* Search function give sezrch bar results */}
+   {/* Search function use in search bar input for giving results */}
 
   const search = (e) => {
     setValue("");
