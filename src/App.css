@@ -32,8 +32,8 @@
 }
 
 .cards {
-  width: 80%;
-  height: 30rem;
+  width: 65%;
+  height: 33rem;
   -webkit-box-shadow: -12px 17px 20px -6px rgba(77, 77, 77, 1);
   -moz-box-shadow: -12px 17px 20px -6px rgba(77, 77, 77, 1);
   box-shadow: -12px 17px 20px -6px rgba(77, 77, 77, 1);
@@ -59,14 +59,14 @@
   border-radius: 5px;
   padding: 5px 20px;
   color: #ff7e5f;
-  font-size: 30px;
+  font-size: 20px;
   border: none;
-  transition: font-size 0.5s linear 1s;
 }
 .shuffle:hover {
   background-color: #d3d3d3;
   color: #fa8128;
   font-size: 33px;
+  transition: font-size 0.1s linear .1s;
 }
 
 .avatar {
@@ -81,7 +81,7 @@
 }
 .logo {
   color: #ececec;
-  font-size: 80px;
+  font-size: 60px;
 }
 .previous {
   background-color: #ececec;
@@ -201,5 +201,10 @@
 	right: 0px;
 	border-radius: 50%;
 }
+
+.down-btn {
+  margin-top:7rem;
+}
+
 
 

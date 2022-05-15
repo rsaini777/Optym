@@ -9,10 +9,10 @@ function Image({ results, pageNumber, pageRange }) {
   };
   console.log(results)
   return (
-    <div>
+    <>
       {results.slice(pageNumber, pageRange).map((item) => (
-        <div className=" d-flex">
-          <div className="">
+       
+          <div className="col-md-6 col-sm-12 ">
             <div className="card mt-5 cards mx-auto">
               <div className="card-body">
                 <LazyLoadImage
@@ -22,13 +22,13 @@ function Image({ results, pageNumber, pageRange }) {
                   src={item.urls.regular}
                   className="images"
                 ></LazyLoadImage>
-                <div className="d-flex justify-content-between ">
-                  <div >
+                <div className="d-flex justify-content-between mt-4">
+                  <div className="">
                     <img alt="" className="avatar" src={item.user.profile_image.medium}></img>
                   </div>
                   <div className="text-start ">
                     <h5 className="personal-info ">{item.user.name}</h5>
-                    <p className="likes ">{item.likes} Likes recieved</p>
+                    <p className="likes card-text">{item.likes} Likes recieved</p>
                   </div>
                   <div className="download">
                   
@@ -42,10 +42,11 @@ function Image({ results, pageNumber, pageRange }) {
                 </div>
               </div>
             </div>
-          </div>
+          
         </div>
+       
       ))}
-    </div>
+    </>
   );
 }
 
